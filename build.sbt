@@ -22,7 +22,7 @@ libraryDependencies <<= scalaVersion { scala_version =>
         "com.github.fommil"    %  "java-logging"             % "1.0",
         "com.typesafe.akka"    %% "akka-contrib"             % "2.1.2" intransitive(),
         "com.typesafe.akka"    %% "akka-actor"               % "2.1.2",
-        "org.specs2"           %% "specs2"                   % "1.13" % "test",
+        "org.specs2"           %% "specs2"                   % "1.15-SNAPSHOT" % "test",
         "com.typesafe.akka"    %% "akka-testkit"             % "2.1.2" % "test"
     )
 }
