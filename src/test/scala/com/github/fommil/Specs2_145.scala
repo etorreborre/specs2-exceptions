@@ -2,7 +2,7 @@ package com.github.fommil
 
 import akka.contrib.jul.JavaLogging
 import org.specs2.control.StackTraceFilter
-import org.specs2.mutable.Specification
+import org.specs2.mutable.SpecificationLike
 import akka.actor.ActorSystem
 import akka.testkit.TestKit
 import akka.util.Timeout
@@ -20,11 +20,12 @@ object LoggedStackTraceFilter extends StackTraceFilter with JavaLogging {
     // this only works because log.error will construct the LogRecord instantly
     // if the Logger only took a reference to mutable 'e' this would never work.
     e.setStackTrace(new Array[StackTraceElement](0))
+    Option(e.getCause).foreach(c => c.setStackTrace(new Array[StackTraceElement](0)))
     e
   }
 }
 
-class Specs2_145 extends TestKit(ActorSystem()) with Specification with JavaLogging {
+class Specs2_145 extends TestKit(ActorSystem()) with SpecificationLike with JavaLogging {
   args.report(traceFilter = LoggedStackTraceFilter)
 
   sequential
@@ -62,7 +63,6 @@ CAUSE: java.lang.AssertionError: assertion failed: expected int, found class jav
 
       self ! "ping"
       expectMsgType[Int] === 13 // doing a === feels cleaner than a "success" at the end
-
       /* In comparison to "fyi" above, the full stderr is:
 
 assertion failed: expected int, found class java.lang.String
